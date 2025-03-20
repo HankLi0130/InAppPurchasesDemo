@@ -4,7 +4,18 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+def props = new Properties()
+file("keystore.properties").withInputStream { props.load(it) }
+
 android {
+    signingConfigs {
+        release {
+            storeFile file(props.getProperty('storeFile'))
+            storePassword props.getProperty('storePassword')
+            keyAlias props.getProperty('keyAlias')
+            keyPassword props.getProperty('keyPassword')
+        }
+    }
     namespace 'app.hankdev.inapppurchases.demo'
     compileSdk 35
 
@@ -16,12 +27,15 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "REVENUECAT_KEY", "\"${props.getProperty('revenuecatKey')}\"")
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -33,6 +47,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
 }
 
