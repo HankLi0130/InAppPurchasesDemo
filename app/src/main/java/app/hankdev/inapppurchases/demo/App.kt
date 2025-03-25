@@ -6,6 +6,10 @@ import com.revenuecat.purchases.Purchases
 import com.revenuecat.purchases.PurchasesConfiguration
 
 class App : Application() {
+    companion object {
+        const val TAG = "demo"
+    }
+
     override fun onCreate() {
         super.onCreate()
         Purchases.logLevel = LogLevel.DEBUG

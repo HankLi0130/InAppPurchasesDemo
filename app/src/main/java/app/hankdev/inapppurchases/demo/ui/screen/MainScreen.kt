@@ -24,7 +24,12 @@ import com.revenuecat.purchases.ui.revenuecatui.PaywallDialogOptions
 import com.revenuecat.purchases.ui.revenuecatui.PaywallListener
 
 @Composable
-fun MainScreen(showAd: Boolean) {
+fun MainScreen(
+    showAd: Boolean,
+    onPurchaseCompleted: (customerInfo: CustomerInfo, storeTransaction: StoreTransaction) -> Unit,
+    onRestoreCompleted: (customerInfo: CustomerInfo) -> Unit,
+    logout: () -> Unit
+) {
     var showPaywall by remember { mutableStateOf(false) }
 
     Column(
@@ -44,6 +49,11 @@ fun MainScreen(showAd: Boolean) {
             Text("Upgrade")
         }
 
+        Spacer(modifier = Modifier.height(18.dp))
+        Button(onClick = logout) {
+            Text("Log out")
+        }
+
         if (showPaywall) {
             PaywallDialog(
                 PaywallDialogOptions.Builder()
@@ -53,9 +63,12 @@ fun MainScreen(showAd: Boolean) {
                             customerInfo: CustomerInfo,
                             storeTransaction: StoreTransaction
                         ) {
+                            //onPurchaseCompleted(customerInfo, storeTransaction)
                         }
 
-                        override fun onRestoreCompleted(customerInfo: CustomerInfo) {}
+                        override fun onRestoreCompleted(customerInfo: CustomerInfo) {
+                            //onRestoreCompleted(customerInfo)
+                        }
                     })
                     .build()
             )
@@ -66,5 +79,10 @@ fun MainScreen(showAd: Boolean) {
 @Preview
 @Composable
 fun MainScreenPreview() {
-    MainScreen(true)
+    MainScreen(
+        true,
+        { customerInfo, storeTransaction -> },
+        { customerInfo -> },
+        {}
+    )
 }
