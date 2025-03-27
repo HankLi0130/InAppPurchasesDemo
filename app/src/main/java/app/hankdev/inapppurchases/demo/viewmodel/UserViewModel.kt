@@ -21,13 +21,11 @@ data class AppUiState(
 class UserViewModel : ViewModel() {
     private var currentUser: User? = null
         set(value) {
-            Log.i(TAG, "set currentUser start: ${value?.plan}")
             _appUiState.value = AppUiState(
                 value?.token?.isEmpty() != false,
                 value?.plan != Plan.PAID
             )
             field = value
-            Log.i(TAG, "set currentUser end: ${value?.plan}\n")
         }
 
     private val _appUiState = MutableStateFlow<AppUiState>(AppUiState())
@@ -37,6 +35,7 @@ class UserViewModel : ViewModel() {
         // TODO authenticate user by the username and the password
         val userId = "hankli0130"
         val token = "hank's token"
+        Log.i(TAG, "login: user id: $userId, token: $token")
 
         Purchases.sharedInstance.logInWith(
             userId,
@@ -51,11 +50,13 @@ class UserViewModel : ViewModel() {
 
     fun onPurchaseCompleted(customerInfo: CustomerInfo, storeTransaction: StoreTransaction) {
         val isPremium = customerInfo.entitlements.active.isNotEmpty()
+        Log.i(TAG, "onPurchaseCompleted, is premium: $isPremium")
         currentUser = currentUser!!.copy(plan = if (isPremium) Plan.PAID else Plan.FREE)
     }
 
     fun onRestoreCompleted(customerInfo: CustomerInfo) {
         val isPremium = customerInfo.entitlements.active.isNotEmpty()
+        Log.i(TAG, "onRestoreCompleted, is premium: $isPremium")
         currentUser = currentUser!!.copy(plan = if (isPremium) Plan.PAID else Plan.FREE)
     }
 

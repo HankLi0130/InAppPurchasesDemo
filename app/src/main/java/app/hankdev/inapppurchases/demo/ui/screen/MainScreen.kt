@@ -63,11 +63,11 @@ fun MainScreen(
                             customerInfo: CustomerInfo,
                             storeTransaction: StoreTransaction
                         ) {
-                            //onPurchaseCompleted(customerInfo, storeTransaction)
+                            onPurchaseCompleted(customerInfo, storeTransaction)
                         }
 
                         override fun onRestoreCompleted(customerInfo: CustomerInfo) {
-                            //onRestoreCompleted(customerInfo)
+                            onRestoreCompleted(customerInfo)
                         }
                     })
                     .build()
